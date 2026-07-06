@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hi Rozhik:)) 🌻</title>
+  <title>Rozhan Date</title>
   <style>
     * {
       box-sizing: border-box;
@@ -93,6 +93,13 @@
       margin: 16px 0 8px;
       color: #355441;
       font-weight: bold;
+    }
+
+    .place-hint {
+      margin: -2px 0 10px;
+      font-size: 0.95rem;
+      color: #5a7464;
+      text-align: right;
     }
 
     input,
@@ -224,10 +231,22 @@
         height: 190px;
       }
 
+      .weekdays,
+      .days-grid {
+        gap: 6px;
+      }
+
       .weekdays div,
       .day-btn,
       .empty-day {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+      }
+
+      .day-btn,
+      .empty-day {
+        height: 34px;
+        min-width: 0;
+        padding: 0;
       }
     }
   </style>
@@ -235,8 +254,9 @@
 <body>
   <div class="card">
     <div id="questionStep">
-      <h1>Hi Rozhik:)) 🌻</h1>
-      <p>میای بریم دیت؟</p>
+      <h1>🌻 Salam Rozhan 🌻</h1>
+      <p>میای بریم دیت؟ (دیت به مناسبت روز دختر برای دختر خوشگله)</p>
+
       <div class="buttons" id="buttonsArea">
         <button id="yesBtn" type="button">بله</button>
         <button id="noBtn" type="button">خیر</button>
@@ -271,11 +291,12 @@
         </div>
 
         <label for="place">کجا بریم؟</label>
+        <div class="place-hint">مثلا کافه کژوال، کافه لب آب، یه جایی بریم بازی کنیم یا ...</div>
         <input
           type="text"
           id="place"
           name="place"
-          placeholder="مثلاً کافه کژوال، کافه لب آب یا مادی (اینقد نیومدی بریم که جریان آب بستن:()، قدم زدن، یا هر چیز دیگه‌ای"
+          placeholder="مثلا کافه کژوال، کافه لب آب، یه جایی بریم بازی کنیم یا ..."
           required
         />
 
@@ -293,7 +314,7 @@
           <input type="text" id="foodAnswer" name="food" />
         </div>
 
-        <label for="note">اگه چیزی هم خودت دوست داری بنویس</label>
+        <label for="note">اگه چیزی هم خودت دوست داری بنویس، مثلاً ماشین‌گردی، یه جای آروم، پیاده‌روی یا هر چیز دیگه</label>
         <textarea
           id="note"
           name="note"
@@ -360,119 +381,110 @@
       }
     }
 
-    function moveNoButton() {
-      const areaRect = buttonsArea.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+    dateDisplay.addEventListener("click", function () {
+      calendar.classList.toggle("hidden");
+    });
 
-      const maxX = Math.max(0, areaRect.width - btnRect.width);
-      const maxY = Math.max(0, areaRect.height - btnRect.height);
-
-      const randomX = Math.floor(Math.random() * (maxX + 1));
-      const randomY = Math.floor(Math.random() * (maxY + 1));
-
-      noBtn.style.right = "auto";
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
-    }
-
-    function updatePlanQuestion() {
-      const value = planSelect.value;
-
-      foodQuestionWrap.classList.add("hidden");
-      foodAnswer.required = false;
-      foodAnswer.value = "";
-
-      if (value === "coffee") {
-        foodQuestionWrap.classList.remove("hidden");
-        foodQuestionLabel.textContent = "کافی چی بخوریم؟";
-        foodAnswer.placeholder = "مثلاً لته، آمریکانو، هات‌چاکلت...";
-        foodAnswer.required = true;
-      } else if (value === "dinner") {
-        foodQuestionWrap.classList.remove("hidden");
-        foodQuestionLabel.textContent = "شام چی بخوریم؟";
-        foodAnswer.placeholder = "مثلاً پاستا، برگر، پیتزا...";
-        foodAnswer.required = true;
-      } else if (value === "both" || value === "custom") {
-        foodQuestionWrap.classList.remove("hidden");
-        foodQuestionLabel.textContent = "خودت بنویس چی بخوریم";
-        foodAnswer.placeholder = "مثلاً اول لته بعدش پیتزا";
-        foodAnswer.required = true;
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest(".date-picker")) {
+        calendar.classList.add("hidden");
       }
-    }
-
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("pointerdown", function (e) {
-      e.preventDefault();
-      moveNoButton();
     });
-    noBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      moveNoButton();
-    });
-    noBtn.addEventListener(
-      "touchstart",
-      function (e) {
-        e.preventDefault();
-        moveNoButton();
-      },
-      { passive: false }
-    );
 
     yesBtn.addEventListener("click", function () {
       questionStep.classList.add("hidden");
       formStep.classList.remove("hidden");
     });
 
-    dateDisplay.addEventListener("click", function () {
-      calendar.classList.toggle("hidden");
-    });
+    planSelect.addEventListener("change", function () {
+      const value = planSelect.value;
 
-    document.addEventListener("click", function (e) {
-      if (!e.target.closest(".date-picker")) {
-        calendar.classList.add("hidden");
-      }
-    });
-
-    planSelect.addEventListener("change", updatePlanQuestion);
-
-    form.addEventListener("submit", function (e) {
-      if (!selectedDay) {
-        e.preventDefault();
-        dateDisplay.textContent = "لطفاً روز را انتخاب کن";
+      if (!value) {
+        foodQuestionWrap.classList.add("hidden");
+        foodQuestionLabel.textContent = "";
+        foodAnswer.value = "";
+        foodAnswer.placeholder = "";
         return;
       }
 
-      selectedDateInput.value = selectedDay + " تیر 1405";
+      foodQuestionWrap.classList.remove("hidden");
 
-      const place = document.getElementById("place").value.trim();
-      const planValue = planSelect.value;
-      const note = document.getElementById("note").value.trim();
-
-      const planTextMap = {
-        coffee: "کافی بخوریم",
-        dinner: "شام بخوریم",
-        both: "اول کافی بخوریم بعدش شام",
-        custom: "یه چیزی که خودت میگی"
-      };
-
-      const extraFoodText =
-        foodQuestionWrap.classList.contains("hidden") || !foodAnswer.value.trim()
-          ? "نداره"
-          : foodAnswer.value.trim();
-
-      result.classList.remove("hidden");
-      result.innerHTML = `
-        <strong>در حال ارسال برنامه :)</strong><br><br>
-        <strong>روز:</strong> ${selectedDay} تیر 1405<br>
-        <strong>جا:</strong> ${place}<br>
-        <strong>برنامه:</strong> ${planTextMap[planValue]}<br>
-        <strong>چی بخوریم:</strong> ${extraFoodText}<br>
-        <strong>توضیحات:</strong> ${note || "نداره"}
-      `;
+      if (value === "coffee") {
+        foodQuestionLabel.textContent = "چی دوست داری بخوری یا بنوشی؟";
+        foodAnswer.placeholder = "مثلاً آیس لاته، هات چاکلت، چیزکیک یا ...";
+      } else if (value === "dinner") {
+        foodQuestionLabel.textContent = "برای شام چی دوست داری؟";
+        foodAnswer.placeholder = "مثلاً پاستا، برگر، پیتزا یا ...";
+      } else if (value === "both") {
+        foodQuestionLabel.textContent = "برای کافی و شام چی دوست داری؟";
+        foodAnswer.placeholder = "مثلاً اول آیس لاته، بعدش پاستا یا ...";
+      } else {
+        foodQuestionLabel.textContent = "برنامه دلخواهت چیه؟";
+        foodAnswer.placeholder = "هر چیزی که دوست داری بنویس...";
+      }
     });
 
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      if (!selectedDateInput.value) {
+        result.classList.remove("hidden");
+        result.textContent = "اول تاریخ را انتخاب کن :)";
+        return;
+      }
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        if (response.ok) {
+          form.classList.add("hidden");
+          result.classList.remove("hidden");
+          result.innerHTML =
+            "مرسی خوشگل خانم <br> منتظر دیتمون میمونم 🌻";
+        } else {
+          result.classList.remove("hidden");
+          result.textContent = "ارسال انجام نشد، دوباره امتحان کن.";
+        }
+      } catch (error) {
+        result.classList.remove("hidden");
+        result.textContent = "یه مشکلی پیش اومد، دوباره امتحان کن.";
+      }
+    });
+
+    function moveNoButton() {
+      const areaRect = buttonsArea.getBoundingClientRect();
+      const buttonRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - buttonRect.width;
+      const maxY = areaRect.height - buttonRect.height;
+
+      const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+
+      noBtn.style.right = "auto";
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    });
+    noBtn.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
     renderCalendar();
-    setTimeout(moveNoButton, 300);
   </script>
 </body>
 </html>
