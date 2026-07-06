@@ -7,18 +7,17 @@
   <style>
     * {
       box-sizing: border-box;
+      font-family: Tahoma, sans-serif;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Tahoma, Arial, sans-serif;
-      background: linear-gradient(135deg, #eef9ee, #dff4e5);
+      background: linear-gradient(135deg, #dff3e3, #eef9e8);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      color: #365c40;
     }
 
     .card {
@@ -30,100 +29,94 @@
       box-shadow: 0 18px 45px rgba(54, 92, 64, 0.12);
       text-align: center;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     h1 {
-      margin: 0 0 18px;
+      margin: 0 0 12px;
       font-size: 2rem;
-      color: #365c40;
+      color: #35624a;
     }
 
     p {
-      line-height: 1.8;
-      color: #5b7563;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .step {
-      width: 100%;
+      color: #466152;
+      line-height: 1.9;
+      margin: 0;
     }
 
     .buttons {
       position: relative;
-      height: 210px;
-      margin-top: 24px;
+      height: 170px;
+      margin-top: 28px;
     }
 
-    .btn {
+    button {
       border: none;
-      border-radius: 16px;
-      padding: 16px 22px;
-      font-size: 1.1rem;
+      border-radius: 14px;
+      padding: 14px 24px;
+      font-size: 1rem;
       cursor: pointer;
       transition: transform 0.2s ease, background 0.2s ease;
-      font-family: inherit;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
+    #yesBtn {
+      background: #5ea36e;
+      color: white;
+      margin-left: 12px;
     }
 
-    .btn-yes {
-      background: #4f8f5b;
-      color: #fff;
-      width: 100%;
-      margin-top: 24px;
+    #yesBtn:hover,
+    .submit-btn:hover,
+    .date-display:hover {
+      transform: scale(1.02);
     }
 
-    .btn-no {
+    #noBtn {
+      background: #edf3ee;
+      color: #355441;
       position: absolute;
-      background: #f2f6f3;
-      color: #365c40;
-      border: 1px solid #d7e7da;
-      min-width: 120px;
+      top: 20px;
+      right: 40px;
     }
 
-    .form-group {
-      margin-bottom: 18px;
+    .hidden {
+      display: none;
+    }
+
+    form {
       text-align: right;
+      margin-top: 22px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #365c40;
+      margin: 16px 0 8px;
+      color: #355441;
+      font-weight: bold;
     }
 
-    .hint {
-      margin: 0 0 10px;
+    .place-hint {
+      margin: -2px 0 10px;
       font-size: 0.95rem;
-      color: #7a9481;
+      color: #5a7464;
+      text-align: right;
     }
 
     input,
-    textarea,
     select,
-    .date-display {
+    textarea {
       width: 100%;
-      border: 1px solid #d7e7da;
-      border-radius: 18px;
-      padding: 16px 18px;
-      font-size: 1.1rem;
-      font-family: inherit;
-      background: #fff;
-      color: #365c40;
-      outline: none;
+      padding: 12px;
+      border: 1px solid #cfe0d2;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #fbfefb;
+      color: #23402d;
     }
 
     textarea {
       resize: vertical;
-      min-height: 120px;
+      min-height: 90px;
     }
 
     .date-picker {
@@ -131,6 +124,13 @@
     }
 
     .date-display {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cfe0d2;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #fbfefb;
+      color: #23402d;
       text-align: right;
       cursor: pointer;
     }
@@ -150,220 +150,204 @@
 
     .calendar-header {
       text-align: center;
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-weight: bold;
+      color: #35624a;
       margin-bottom: 14px;
-      color: #365c40;
     }
 
     .weekdays,
     .days-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(7, 1fr);
       gap: 8px;
-    }
-
-    .weekdays {
-      margin-bottom: 10px;
     }
 
     .weekdays div {
       text-align: center;
-      font-size: 0.92rem;
-      color: #5f7a66;
-      white-space: nowrap;
+      font-size: 0.9rem;
+      color: #567662;
+      padding-bottom: 4px;
     }
 
     .day-btn,
     .empty-day {
-      min-width: 0;
-      border-radius: 14px;
-      padding: 12px 0;
-      text-align: center;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
     }
 
     .empty-day {
-      background: #f6faf7;
+      visibility: hidden;
     }
 
     .day-btn {
-      border: none;
-      background: #f3faf5;
-      color: #365c40;
-      font-size: 1rem;
+      background: #f3faf4;
+      color: #2f5640;
+      border: 1px solid transparent;
       cursor: pointer;
-      font-family: inherit;
+      transition: 0.2s ease;
+    }
+
+    .day-btn:hover {
+      background: #dff0e2;
     }
 
     .day-btn.selected {
-      background: #4f8f5b;
+      background: #5ea36e;
       color: #fff;
     }
 
-    .success-message {
-      font-size: 1.15rem;
-      color: #365c40;
+    .submit-btn {
+      width: 100%;
+      margin-top: 20px;
+      background: #4c8a5c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #eef8f0;
+      border-radius: 16px;
+      padding: 18px;
+      color: #2f5640;
+      text-align: right;
       line-height: 1.9;
     }
 
     @media (max-width: 640px) {
-      body {
-        padding: 14px;
-      }
-
       h1 {
         font-size: 1.7rem;
       }
 
       .card {
         padding: 22px;
-        border-radius: 22px;
-        overflow: hidden;
-      }
-
-      label {
-        font-size: 1.1rem;
       }
 
       .buttons {
         height: 190px;
       }
 
-      .calendar {
-        right: 0;
-        left: 0;
-        width: 100%;
-        padding: 12px;
-      }
-
       .weekdays,
       .days-grid {
-        grid-template-columns: repeat(7, minmax(0, 1fr));
         gap: 6px;
       }
 
       .weekdays div,
       .day-btn,
       .empty-day {
-        font-size: 0.78rem;
+        font-size: 0.8rem;
       }
 
       .day-btn,
       .empty-day {
-        padding: 10px 0;
-      }
-
-      input,
-      textarea,
-      select,
-      .date-display {
-        font-size: 1rem;
-        padding: 14px 16px;
+        height: 34px;
+        min-width: 0;
+        padding: 0;
       }
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <section id="questionStep" class="step">
-      <h1>Salam Rozhan 🌻</h1>
-      <p>با من دیت میای؟</p>
+    <div id="questionStep">
+      <h1>🌻 Salam Rozhan 🌻</h1>
+      <p>میای بریم دیت؟ (دیت به مناسبت روز دختر برای دختر خوشگله)</p>
 
-      <div class="buttons" id="buttonsBox">
-        <button id="yesBtn" class="btn btn-yes" type="button">آره بریم :)</button>
-        <button id="noBtn" class="btn btn-no" type="button">نه</button>
+      <div class="buttons" id="buttonsArea">
+        <button id="yesBtn" type="button">بله</button>
+        <button id="noBtn" type="button">خیر</button>
       </div>
-    </section>
+    </div>
 
-    <section id="formStep" class="step hidden">
-      <h1>جزئیات دیت رو بچین</h1>
+    <div id="formStep" class="hidden">
+      <p>جزئیات دیت رو بچین</p>
 
       <form id="dateForm" action="https://formspree.io/f/mdarjapv" method="POST">
-        <div class="form-group">
-          <label for="dateDisplay">چه روزی بریم؟</label>
-          <div class="date-picker">
-            <button type="button" id="dateDisplay" class="date-display">روز را انتخاب کن</button>
+        <input type="hidden" id="selectedDateInput" name="date" />
 
-            <div id="calendar" class="calendar hidden">
-              <div class="calendar-header">تیر 1405</div>
+        <label for="dateDisplay">چه روزی بریم؟</label>
+        <div class="date-picker">
+          <button type="button" id="dateDisplay" class="date-display">روز را انتخاب کن</button>
 
-              <div class="weekdays">
-                <div>شنبه</div>
-                <div>یکشنبه</div>
-                <div>دوشنبه</div>
-                <div>سه‌شنبه</div>
-                <div>چهارشنبه</div>
-                <div>پنجشنبه</div>
-                <div>جمعه</div>
-              </div>
+          <div id="calendar" class="calendar hidden">
+            <div class="calendar-header">تیر 1405</div>
 
-              <div id="daysGrid" class="days-grid"></div>
+            <div class="weekdays">
+              <div>شنبه</div>
+              <div>یکشنبه</div>
+              <div>دوشنبه</div>
+              <div>سه‌شنبه</div>
+              <div>چهارشنبه</div>
+              <div>پنجشنبه</div>
+              <div>جمعه</div>
             </div>
+
+            <div id="daysGrid" class="days-grid"></div>
           </div>
-          <input type="hidden" name="selected_date" id="selectedDateInput" />
         </div>
 
-        <div class="form-group">
-          <label for="placeInput">کجا بریم؟</label>
-          <p class="hint">مثلا کافه گوزال، کافه لب آب، یه جایی بریم بازی کنیم یا ...</p>
-          <input
-            type="text"
-            id="placeInput"
-            name="place"
-            placeholder="مثلا کافه گوزال، کافه لب آب، یه جایی بریم بازی کنیم"
-            required
-          />
+        <label for="place">کجا بریم؟</label>
+        <div class="place-hint">مثلا کافه کژوال، کافه لب آب، یه جایی بریم بازی کنیم یا ...</div>
+        <input
+          type="text"
+          id="place"
+          name="place"
+          placeholder="مثلا کافه کژوال، کافه لب آب، یه جایی بریم بازی کنیم یا ..."
+          required
+        />
+
+        <label for="plan">دوست داری چیکار کنیم؟</label>
+        <select id="plan" name="plan" required>
+          <option value="">انتخاب کن</option>
+          <option value="coffee">کافی بخوریم</option>
+          <option value="dinner">شام بخوریم</option>
+          <option value="both">اول کافی بخوریم بعدش شام</option>
+          <option value="custom">یه چیزی که خودت میگی</option>
+        </select>
+
+        <div id="foodQuestionWrap" class="hidden">
+          <label for="foodAnswer" id="foodQuestionLabel"></label>
+          <input type="text" id="foodAnswer" name="food" />
         </div>
 
-        <div class="form-group">
-          <label for="activityInput">دوست داری چیکار کنیم؟</label>
-          <textarea
-            id="activityInput"
-            name="activity"
-            placeholder="مثلا حرف بزنیم، قدم بزنیم، بازی کنیم، قهوه بخوریم..."
-            required
-          ></textarea>
-        </div>
+        <label for="note">اگه چیزی هم خودت دوست داری بنویس، مثلاً ماشین‌گردی، یه جای آروم، پیاده‌روی یا هر چیز دیگه</label>
+        <textarea
+          id="note"
+          name="note"
+          placeholder="مثلاً ماشین‌گردی، یه جای آروم، پیاده‌روی، یا هر چیز دیگه‌ای که دوست داری..."
+        ></textarea>
 
-        <button class="btn btn-yes" type="submit">برو تا بریم :)</button>
+        <button type="submit" class="submit-btn">برو تا بریم :)</button>
       </form>
-    </section>
 
-    <section id="successStep" class="step hidden">
-      <h1>ثبت شد</h1>
-      <p class="success-message">همه چیز ثبت شد. منتظر می‌مونم ببینم چه برنامه‌ای چیدی.</p>
-    </section>
+      <div id="result" class="result hidden"></div>
+    </div>
   </div>
 
   <script>
-    const questionStep = document.getElementById("questionStep");
-    const formStep = document.getElementById("formStep");
-    const successStep = document.getElementById("successStep");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    const buttonsBox = document.getElementById("buttonsBox");
+    const buttonsArea = document.getElementById("buttonsArea");
+    const questionStep = document.getElementById("questionStep");
+    const formStep = document.getElementById("formStep");
+    const form = document.getElementById("dateForm");
+    const result = document.getElementById("result");
+
+    const planSelect = document.getElementById("plan");
+    const foodQuestionWrap = document.getElementById("foodQuestionWrap");
+    const foodQuestionLabel = document.getElementById("foodQuestionLabel");
+    const foodAnswer = document.getElementById("foodAnswer");
+
     const dateDisplay = document.getElementById("dateDisplay");
     const calendar = document.getElementById("calendar");
     const daysGrid = document.getElementById("daysGrid");
     const selectedDateInput = document.getElementById("selectedDateInput");
-    const dateForm = document.getElementById("dateForm");
 
     let selectedDay = "";
-
-    function placeNoButtonRandomly() {
-      const boxRect = buttonsBox.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-
-      const maxX = Math.max(0, boxRect.width - btnRect.width);
-      const maxY = Math.max(0, boxRect.height - btnRect.height);
-
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-
-      noBtn.style.right = "auto";
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
-    }
 
     function renderCalendar() {
       const startOffset = 2;
@@ -397,18 +381,6 @@
       }
     }
 
-    yesBtn.addEventListener("click", function () {
-      questionStep.classList.add("hidden");
-      formStep.classList.remove("hidden");
-    });
-
-    noBtn.addEventListener("mouseenter", placeNoButtonRandomly);
-    noBtn.addEventListener("click", placeNoButtonRandomly);
-    noBtn.addEventListener("touchstart", function (event) {
-      event.preventDefault();
-      placeNoButtonRandomly();
-    }, { passive: false });
-
     dateDisplay.addEventListener("click", function () {
       calendar.classList.toggle("hidden");
     });
@@ -419,13 +391,52 @@
       }
     });
 
-    dateForm.addEventListener("submit", async function (event) {
+    yesBtn.addEventListener("click", function () {
+      questionStep.classList.add("hidden");
+      formStep.classList.remove("hidden");
+    });
+
+    planSelect.addEventListener("change", function () {
+      const value = planSelect.value;
+
+      if (!value) {
+        foodQuestionWrap.classList.add("hidden");
+        foodQuestionLabel.textContent = "";
+        foodAnswer.value = "";
+        foodAnswer.placeholder = "";
+        return;
+      }
+
+      foodQuestionWrap.classList.remove("hidden");
+
+      if (value === "coffee") {
+        foodQuestionLabel.textContent = "چی دوست داری بخوری یا بنوشی؟";
+        foodAnswer.placeholder = "مثلاً آیس لاته، هات چاکلت، چیزکیک یا ...";
+      } else if (value === "dinner") {
+        foodQuestionLabel.textContent = "برای شام چی دوست داری؟";
+        foodAnswer.placeholder = "مثلاً پاستا، برگر، پیتزا یا ...";
+      } else if (value === "both") {
+        foodQuestionLabel.textContent = "برای کافی و شام چی دوست داری؟";
+        foodAnswer.placeholder = "مثلاً اول آیس لاته، بعدش پاستا یا ...";
+      } else {
+        foodQuestionLabel.textContent = "برنامه دلخواهت چیه؟";
+        foodAnswer.placeholder = "هر چیزی که دوست داری بنویس...";
+      }
+    });
+
+    form.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const formData = new FormData(dateForm);
+      if (!selectedDateInput.value) {
+        result.classList.remove("hidden");
+        result.textContent = "اول تاریخ را انتخاب کن :)";
+        return;
+      }
+
+      const formData = new FormData(form);
 
       try {
-        const response = await fetch(dateForm.action, {
+        const response = await fetch(form.action, {
           method: "POST",
           body: formData,
           headers: {
@@ -434,23 +445,46 @@
         });
 
         if (response.ok) {
-          formStep.classList.add("hidden");
-          successStep.classList.remove("hidden");
-          dateForm.reset();
-          selectedDay = "";
-          selectedDateInput.value = "";
-          dateDisplay.textContent = "روز را انتخاب کن";
-          renderCalendar();
+          form.classList.add("hidden");
+          result.classList.remove("hidden");
+          result.innerHTML =
+            "مرسی خوشگل خانم <br> منتظر دیتمون میمونم 🌻";
         } else {
-          alert("ارسال انجام نشد. دوباره امتحان کن.");
+          result.classList.remove("hidden");
+          result.textContent = "ارسال انجام نشد، دوباره امتحان کن.";
         }
       } catch (error) {
-        alert("مشکل در اتصال. دوباره امتحان کن.");
+        result.classList.remove("hidden");
+        result.textContent = "یه مشکلی پیش اومد، دوباره امتحان کن.";
       }
     });
 
+    function moveNoButton() {
+      const areaRect = buttonsArea.getBoundingClientRect();
+      const buttonRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - buttonRect.width;
+      const maxY = areaRect.height - buttonRect.height;
+
+      const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+
+      noBtn.style.right = "auto";
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    });
+    noBtn.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
     renderCalendar();
-    placeNoButtonRandomly();
   </script>
 </body>
 </html>
