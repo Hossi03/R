@@ -204,10 +204,12 @@
       background: #fde8e8;
       color: #c62828;
       border: 1px solid #f3b5b5;
+      cursor: not-allowed;
     }
 
     .day-btn.booked:hover {
       background: #f9d6d6;
+      transform: none;
     }
 
     .submit-btn {
@@ -380,16 +382,20 @@
 
         if (isBooked) {
           dayButton.classList.add("booked");
+          dayButton.setAttribute("aria-disabled", "true");
         }
 
-        if (dayValue === selectedDay) {
+        if (!isBooked && dayValue === selectedDay) {
           dayButton.classList.add("selected");
         }
 
         dayButton.addEventListener("click", function () {
           if (isBooked) {
+            selectedDay = "";
+            selectedDateInput.value = "";
             dateDisplay.textContent = "رزرو شده!";
             calendar.classList.add("hidden");
+            renderCalendar();
             return;
           }
 
@@ -476,7 +482,7 @@
           form.classList.add("hidden");
           result.classList.remove("hidden");
           result.innerHTML =
-            "مرسی ماه من<br> منتظر دیتمون میمونم 🌻";
+            "مرسی ماه من<br> آماده شو تا بیام دنبالت 🌻";
         } else {
           result.classList.remove("hidden");
 
